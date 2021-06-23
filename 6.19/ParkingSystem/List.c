@@ -51,7 +51,7 @@ Node* findNode(List* list, elementType item){
 	}
 	Node* p;
 	for(p=list->head; p!=NULL; p=p->next){
-		if(p->item == item){
+		if(isEqual(p->item, item)){
 			break;
 		}
 	}
@@ -64,12 +64,16 @@ int getLength(List *list){
 
 void delNode(List* list, elementType item){
 	if(list == NULL){
-		printf("Head is NULL\n");
+		printf("list is NULL\n");
+		return ;
+	}
+	if(getLength(list) == 0){//对在空链上的删除操作给出提示
+		printf("fail to delete, no item in the list\n");
 		return ;
 	}
 	Node *p, *pre;
 	for(p = list->head; p!= NULL; pre = p,p = p->next){
-		if(p->item == item){
+		if(isEqual(p->item, item)){
 			break;
 		}
 	}
@@ -92,10 +96,15 @@ void delNode(List* list, elementType item){
 	pre->next = p->next;
 	free(p);
 }
-void destoryList(List* list){		
-	if(list == NULL){
+void destoryList(List **plist){		
+	List *list = *plist;
+	if(plist == NULL || list == NULL){
 		printf("list is NULL");
 		return ;
+	}
+	if(isEmpty(list)){
+		free(list);
+		*plist = NULL;
 	}
 	for(Node* p=list->head; p!=NULL;){
 		Node* temp = p;
@@ -103,7 +112,7 @@ void destoryList(List* list){
 		free(temp);
 	}
 	free(list);
-	list = NULL;
+	*plist = NULL;
 }
 
 void displayList(List* list){
@@ -112,7 +121,19 @@ void displayList(List* list){
 		return;
 	}
 	for(Node* p=list->head; p!=NULL; p=p->next){
-		 printf("%d ", p->item);//待改进，要根据elementType来做输出处理......
+		 showItem(p->item);
+		//printf("%d ", p->item);//待改进，要根据elementType来做输出处理......
 	}
 	printf("\n");
 }
+
+void showItem(elementType item){
+	printf("车牌号：%s \n入库时间:%d-%d-%d %d:%02d:%02d\n", item.carNumber, item.timeinfo.tm_year+1900,
+		item.timeinfo.tm_mon+1, item.timeinfo.tm_mday, item.timeinfo.tm_hour, item.timeinfo.tm_min, item.timeinfo.tm_sec);	
+}
+
+int isEqual(elementType itemA, elementType itemB){
+	return strcmp(itemA.carNumber, itemB.carNumber) == 0;
+}
+
+

@@ -11,14 +11,14 @@ typedef struct NODE{
 	struct NODE *next;
 }Node;
 
-type struct LIST{
+typedef struct LIST{
 	Node *head;
 	Node *tail;
 	int length;
 }List;
 
 List* createList();
-void destoryList(List *list);
+void destoryList(List **plist);
 int isEmpty(List *list);
 int getLength(List *list);
 void insertNode(List *list, elementType item);

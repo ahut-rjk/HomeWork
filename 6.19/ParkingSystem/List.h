@@ -3,7 +3,15 @@
 
 #include<stdlib.h>
 #include<stdio.h>
-#define elementType int
+#include<string.h>
+#include<time.h>
+
+#define elementType CarInfo
+
+typedef struct CARINFO{
+	char carNumber[20];
+	struct tm timeinfo;//time.h库,获取系统时间
+}CarInfo;
 
 typedef struct NODE {
 	 elementType item;
@@ -22,6 +30,9 @@ int getLength(List *list);
 void insertNode(List* list, elementType item);
 Node* findNode(List* list, elementType item);
 void delNode(List* list, elementType item);
-void destoryList(List* list);
+void destoryList(List** plist);
 void displayList(List* list);
+
+int isEqual(elementType itemA, elementType itemB);
+void showItem(elementType item);
 #endif
